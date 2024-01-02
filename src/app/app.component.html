@@ -1,0 +1,47 @@
+<h1>Select cluster to check logs</h1>
+<select (change)="handleChangeCluster($event)">
+  <option value="https://inthrms.paxanimi.ai">Integration Log</option>
+  <option value="https://devhrms.paxanimi.ai">Dev Log</option>
+  <option value="https://stghrms.paxanimi.ai">Staging Log</option>
+</select>
+
+<h1>Select cluster to check logs</h1>
+
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Send at</th>
+        <th>Trigger By</th>
+        <th>Send To</th>
+        <th>CC</th>
+        <th>BCC</th>
+        <th>Subject</th>
+        <th>Content</th>
+        <th>Error</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let log of logs$ |async">
+        <td>{{log.createdAt}}</td>
+        <td>{{log.triggerBy}}</td>
+        <td>{{log.to.join(', ')}}</td>
+        <td>{{log.cc.join(', ')}}</td>
+        <td>{{log.bcc.join(', ')}}</td>
+        <td>{{log.subject}}</td>
+        <td class="content" (click)="showContent(log.content)">Click here to view content</td>
+        <td style="width: 500px;">
+          {{log.error?.message}}
+          <pre>
+          </pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="content" class="modal-content">
+  <h3 (click)="closeContent()" class="close">Close</h3>
+  <iframe [srcdoc]="content" frameborder="0"></iframe>
+</div>
