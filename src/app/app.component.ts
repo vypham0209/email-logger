@@ -37,7 +37,7 @@ export class AppComponent {
           query['template'] = template
         }
         if (search) {
-          query['seach'] = search
+          query['search'] = search
         }
         return this.httpClient.get<{ data: any, total: number }>('/send-mail/logs', { params: query })
       }),
