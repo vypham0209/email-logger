@@ -4,9 +4,14 @@
   <option value="https://devhrms.paxanimi.ai">Dev Log</option>
   <option value="https://stghrms.paxanimi.ai">Staging Log</option>
 </select>
-
-<h1>Select cluster to check logs</h1>
-
+<select (change)="filterTemplate($event)">
+  <option value="">Select filter template</option>
+  <option *ngFor="let template of templates">{{template}}</option>
+</select>
+<input (keyup)="search($event)" type="text" placeholder="Search subject">
+<h1>Page : {{page$ | async}} | Total Page: {{totalPage}}</h1>
+<div class="change-page" (click)="changePage(-1)">Previous page</div>
+<div class="change-page" (click)="changePage(1)">Next Page</div>
 <div class="table">
   <table>
     <thead>
@@ -26,9 +31,12 @@
       <tr *ngFor="let log of logs$ |async">
         <td>{{log.createdAt}}</td>
         <td>{{log.triggerBy}}</td>
-        <td>{{log.to.join(', ')}}</td>
-        <td>{{log.cc.join(', ')}}</td>
-        <td>{{log.bcc.join(', ')}}</td>
+        <td>
+          {{log.to.length < 5 ? log.to.join(', ') : log.to.length + ' Email'}} </td>
+        <td>
+          {{log.cc.length < 5 ? log.cc.join(' , ') : log.cc.length + ' Email'}} </td>
+        <td>
+          {{log.bcc.length < 5 ? log.bcc.join(' , ') : log.bcc.length + ' Email'}} </td>
         <td>{{log.subject}}</td>
         <td class="content" (click)="showContent(log.content)">Click here to view content</td>
         <td style="width: 500px;">
