@@ -53,3 +53,39 @@
   <h3 (click)="closeContent()" class="close">Close</h3>
   <iframe [srcdoc]="content" frameborder="0"></iframe>
 </div>
+
+<form [formGroup]="form" (submit)="pullRequest()" class="pull-request">
+  <h1>Create PR</h1>
+  <input type="text" placeholder="input github token" [formControl]="form.controls.token">
+  <div class="block">
+    <span>From branch</span>
+    <select [formControl]="form.controls.fromBranch">
+      <option value="integration">integration</option>
+      <option value="dev">dev</option>
+      <option value="staging">staging</option>
+      <option value="production">production</option>
+    </select>
+  </div>
+
+  <div class="block">
+    <span>To branch</span>
+    <select [formControl]="form.controls.toBranch">
+      <option value="integration">integration</option>
+      <option value="dev">dev</option>
+      <option value="staging">staging</option>
+      <option value="production">production</option>
+    </select>
+  </div>
+
+  <h1>Select repo</h1>
+  <div class="repos">
+    <div class="repo" *ngFor="let repo of repos; let i = index" formArrayName="repos">
+      <input [formControlName]="i" type="checkbox" [id]="repo.repo">
+      <label [for]="repo.repo">{{repo.repo}}</label>
+      <div class="error" *ngIf="repo.error">{{repo.error}}</div>
+      <a class="url" target="_blank" [href]="repo.url" *ngIf="repo.url">{{repo.url}}</a>
+    </div>
+  </div>
+
+  <button>Create PR</button>
+</form>
